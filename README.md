@@ -112,21 +112,21 @@ This example illustrates direct orchestration where a Director class orchestrate
         constructor(){
             this.writer = langobject(new Writer());
             this.webPageEditor = langobject(new WebPageEditor());
-            this.scratchpad = null
+            this.scratchpad=''
         }
 
-        direct(topic){
+        async direct(topic){
             this.scratchpad = await this.writer.generateJoke(topic, "Korean")
-            this.page = await this.webPageEditor.createHtmlPage(this.scratchpad)
+            let page = await this.webPageEditor.createHtmlPage(this.scratchpad)
 
+            return (page)
         }
     }
 
     const publisher = new Director();
 
-    await publisher.direct("a cute dog")
+    publisher.direct("a cute dog").then(result => document.write(result))
 
-    document.write(publisher.page)
 ```
 
 

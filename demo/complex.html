@@ -1,8 +1,8 @@
 
-<script src="aime.js"/>
 
-<script>
-    
+<script type="module">
+    import langobject from '../src/langobject'
+  
     class Joke{
         constructor(){
             this.title = null
@@ -18,6 +18,13 @@
         generateAnotherJoke(topic, language){  
             return `    
                 please generate a joke for ${topic} in ${language} language. 
+            `
+        }
+
+        generateJsonJoke(topic, language){
+            return `    
+                please generate a joke for ${topic} in ${language} language. 
+            
                 result must be in JSON format:
                 \`\`\`
                 {
@@ -36,28 +43,13 @@
             ]
         }
 
-        //orchestrating the methods
 
-        generateWebPage(joke){
-            return `generate a html web page for ${joke}`
-        }
-
-        orchestrate(){
-            let me = aime(this);
-            
-            let joke = me.generateJoke("cute dog")
-            console.log(joke)
-            
-            let webPage = me.generateWebPage(joke)
-            console.log(webPage)
-        }
     }
 
-    const publisher = new Publisher();
+    const publisher = langobject(new Publisher());
 
-    // console.log(
-    //     aime(publisher).generateJoke("a cute dog")
-    // )
-
-    publisher.orchestrate()
+    publisher.generateJsonJoke("a cute dog", "Korean")
+        .then(
+            result => document.write(result.content)
+        )
 </script>

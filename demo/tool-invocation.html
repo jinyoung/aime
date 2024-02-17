@@ -1,7 +1,7 @@
 
-<script src="aime.js"></script>
 
-<script>
+<script type="module">
+    import langobject from './src/langobject.js'
     
     class Scheduler{
         createSchedule(topic){
@@ -19,5 +19,5 @@
         }
     }
 
-    document.write(aime(new Scheduler()).createSchedule("4 days trip for South Korea"))
+    document.write(langobject(new Scheduler()).createSchedule("4 days trip for South Korea"))
 </script>

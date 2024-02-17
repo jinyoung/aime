@@ -1,11 +1,10 @@
-# This is still a draft. It is scheduled to be released in early March.
 
 AI application development often requires a balance between leveraging the power of AI and maintaining object-oriented programming principles. Traditional frameworks like LangChain and Semantic Kernel offer robust solutions but may require developers to adapt their design patterns to fit the AI integration model.
 
-#### AIME Framework
-The AIME framework aims to integrate AI capabilities into applications without compromising the object-oriented design. It does so by wrapping existing classes with AI-enhanced proxies that intercept method calls and optionally redirect them to AI services for processing. This approach allows developers to add AI functionalities with minimal changes to the existing codebase.
+# Langobject Framework
+The langobject framework aims to integrate AI capabilities into applications without compromising the object-oriented design. It does so by wrapping existing classes with AI-enhanced proxies that intercept method calls and optionally redirect them to AI services for processing. This approach allows developers to add AI functionalities with minimal changes to the existing codebase.
 
-Consider the following example where an existing Publisher class method generateJoke is enhanced with AI capabilities using AIME:
+Consider the following example where an existing Publisher class method generateJoke is enhanced with AI capabilities using langobject:
 
 ```js
     class Publisher{
@@ -15,19 +14,13 @@ Consider the following example where an existing Publisher class method generate
     }
 
     //create AI version of Publisher
-    publisher = aime(new Publisher())
-
-    let joke = publisher.generateJoke("a cute dog", "Korean")
-
-    alert(joke)
-
-
-    // You'll also get an async version as a bonus!
-    publisher.agenerateJoke("a cute dog", "Korean").then(joke => alert(joke));
+    let publisher = langobject(new Publisher())
+    
+    publisher.generateJoke("a cute dog", "Korean").then(joke => alert(joke));
 ```
 
 
-In this example, the Publisher class remains unchanged, preserving its object-oriented design. The AIME framework wraps the Publisher instance, providing an AI-enhanced proxy that can intercept the generateJoke method call and process it using AI services.
+In this example, the Publisher class remains unchanged, preserving its object-oriented design. The langobject framework wraps the Publisher instance, providing an AI-enhanced proxy that can intercept the generateJoke method call and process it using AI services.
 
 #### Comparison
 - LangChain and Semantic Kernel offer comprehensive solutions for AI integration but may require adapting your application's architecture to fully leverage their capabilities.
@@ -47,9 +40,58 @@ In this example, the Publisher class remains unchanged, preserving its object-or
 
 
 
-- AIME Framework focuses on minimally invasive integration, allowing developers to maintain their object-oriented design while adding AI functionalities. This approach is particularly beneficial for applications where preserving the existing architecture and design patterns is crucial.
+- langobject Framework focuses on minimally invasive integration, allowing developers to maintain their object-oriented design while adding AI functionalities. This approach is particularly beneficial for applications where preserving the existing architecture and design patterns is crucial.
 
-In summary, the AIME framework provides a unique solution for integrating AI into applications with minimal disruption to object-oriented principles, offering a contrast to the more invasive integration strategies required by frameworks like LangChain and Semantic Kernel.
+In summary, the langobject framework provides a unique solution for integrating AI into applications with minimal disruption to object-oriented principles, offering a contrast to the more invasive integration strategies required by frameworks like LangChain and Semantic Kernel.
+
+
+
+# How to use
+```
+npm i langobject
+```
+and try following examples:
+
+#### Specifying Prompt
+
+While the default behavior is to automatically generate prompts from the method name and parameters, this example uses a given prompt to request a joke. It explicitly forms the request string, providing more control over the AI's input.
+
+```
+    class Publisher{
+        //derives the prompt from the method and parameter names
+        generateJoke(topic, language){} 
+        
+        //use the given prompt
+        generateAnotherJoke(topic, language){  
+            return `    
+                please generate a joke for ${topic} in ${language} language. 
+            `
+        }
+
+        generateJsonJoke(topic, language){
+            return `    
+                please generate a joke for ${topic} in ${language} language. 
+            
+                result must be in JSON format:
+                \`\`\`
+                {
+                    title: title of joke,
+                    content: content of joke
+                }
+                \`\`\`
+            `
+        }
+
+    }
+
+    const publisher = langobject(new Publisher());
+
+    publisher.generateJsonJoke("a cute dog", "Korean")
+        .then(
+            result => document.write(result.content)
+        )
+
+```
 
 
 #### Orchestration and Memory
@@ -67,8 +109,8 @@ This example illustrates direct orchestration where a Director class orchestrate
 
     class Director{
         constructor(){
-            this.writer = aime(new Writer());
-            this.webPageEditor = aime(new WebPageEditor());
+            this.writer = langobject(new Writer());
+            this.webPageEditor = langobject(new WebPageEditor());
             this.scratchpad = null
         }
 
@@ -81,7 +123,7 @@ This example illustrates direct orchestration where a Director class orchestrate
 
     const publisher = new Director();
 
-    await publisher.adirect("a cute dog")
+    await publisher.direct("a cute dog")
 
     document.write(publisher.page)
 ```
@@ -108,7 +150,7 @@ In this example, a Scheduler class defines a tool (method) called calculate with
         }
     }
 
-    document.write(aime(new Scheduler()).createSchedule("4 days trip for South Korea"))
+    document.write(langobject(new Scheduler()).createSchedule("4 days trip for South Korea"))
 ```
 
 
@@ -133,6 +175,15 @@ This example shows a multi-agent system where a Scheduler class creates a schedu
         plan(topic){}
     }
 
-    document.write(aime(new Scheduler()).createSchedule("4 days trip for South Korea"))
+    document.write(langobject(new Scheduler()).createSchedule("4 days trip for South Korea"))
 ```
 
+# How to try
+
+```
+npm run serve
+```
+
+Please navigate to http://localhost:3000/demo/ in your browser. Once there, open the browser's console and set your OpenAI API key by executing localStorage.setItem('OPENAI_API_KEY', 'sk...'). Afterward, proceed to the src folder and try running the various HTML files available there.
+
+![Screenshot](screenshot.png)

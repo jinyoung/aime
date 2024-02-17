@@ -1,0 +1,32 @@
+
+<script type="module">
+
+    import langobject from '../src/langobject.js'
+    
+    class WebPageEditor{
+        createHtmlPage(joke){}
+    }
+
+    class Writer{
+        generateJoke(topic, language){} 
+    }
+
+    class Director{
+        constructor(){
+            this.writer = langobject(new Writer());
+            this.webPageEditor = langobject(new WebPageEditor());
+            this.scratchpad=''
+        }
+
+        async direct(topic){
+            this.scratchpad = await this.writer.generateJoke(topic, "Korean")
+            let page = await this.webPageEditor.createHtmlPage(this.scratchpad)
+
+            return (page)
+        }
+    }
+
+    const publisher = new Director();
+
+    publisher.direct("a cute dog").then(result => document.write(result))
+</script>

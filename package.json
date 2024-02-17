@@ -1,0 +1,32 @@
+{
+  "name": "langobject",
+  "version": "1.0.1",
+  "description": "ai version of Object",
+  "main": "src/langobject.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jinyoung/langobject.git"
+  },
+  "keywords": [
+    "LLM",
+    "ChatGPT",
+    "langchain"
+  ],
+  "author": "Rick Jang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jinyoung/langobject/issues"
+  },
+  "homepage": "https://github.com/jinyoung/langobject#readme",
+  "devDependencies": {
+    "serve": "^14.2.1"
+  },
+  "dependencies": {
+    "langobject": "^1.0.0",
+    "partial-json-parser": "^1.2.2"
+  }
+}

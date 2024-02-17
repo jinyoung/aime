@@ -32,13 +32,11 @@ In this example, the Publisher class remains unchanged, preserving its object-or
 
 
 ```py
-    # 농담을 생성하는 함수를 정의합니다.
     def generate_joke(topic, language):
         prompt = f"Generate a funny joke about {topic} in {language}."
         response = llm(prompt)
         return response
 
-    # SingleComponentChain을 사용하여 체인을 생성하고 실행합니다.
     chain = SingleComponentChain(generate_joke)
     joke = chain.run("a cute dog", "Korean")
 

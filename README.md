@@ -32,13 +32,11 @@ In this example, the Publisher class remains unchanged, preserving its object-or
 
 
 ```py
-    # 농담을 생성하는 함수를 정의합니다.
     def generate_joke(topic, language):
         prompt = f"Generate a funny joke about {topic} in {language}."
         response = llm(prompt)
         return response
 
-    # SingleComponentChain을 사용하여 체인을 생성하고 실행합니다.
     chain = SingleComponentChain(generate_joke)
     joke = chain.run("a cute dog", "Korean")
 
@@ -50,6 +48,42 @@ In this example, the Publisher class remains unchanged, preserving its object-or
 - AIME Framework focuses on minimally invasive integration, allowing developers to maintain their object-oriented design while adding AI functionalities. This approach is particularly beneficial for applications where preserving the existing architecture and design patterns is crucial.
 
 In summary, the AIME framework provides a unique solution for integrating AI into applications with minimal disruption to object-oriented principles, offering a contrast to the more invasive integration strategies required by frameworks like LangChain and Semantic Kernel.
+
+
+#### Orchestration and Memory
+This example illustrates direct orchestration where a Director class orchestrates the workflow between a Writer class, which generates a joke, and a WebPageEditor class, which creates an HTML page based on the joke. The Director class directly manages the interaction between these two classes.
+
+```js
+    
+    class WebPageEditor{
+        createHtmlPage(joke){}
+    }
+
+    class Writer{
+        generateJoke(topic, language){} 
+    }
+
+    class Director{
+        constructor(){
+            this.writer = aime(new Writer());
+            this.webPageEditor = aime(new WebPageEditor());
+            this.joke = null
+        }
+
+        direct(topic){
+            this.joke = this.writer.generateJoke(topic, "Korean")
+            this.page = this.webPageEditor.createHtmlPage(joke)
+
+        }
+    }
+
+    const publisher = new Director();
+
+    await publisher.adirect("a cute dog")
+
+    document.write(publisher.page)
+```
+
 
 #### Tool Invocation
 In this example, a Scheduler class defines a tool (method) called calculate within its createSchedule method. This demonstrates how a tool can be invoked internally within the orchestration logic, showcasing a pattern where tools are defined and used within the same class.
@@ -75,37 +109,6 @@ In this example, a Scheduler class defines a tool (method) called calculate with
     document.write(aime(new Scheduler()).createSchedule("4 days trip for South Korea"))
 ```
 
-#### Direct Orchestration
-This example illustrates direct orchestration where a Director class orchestrates the workflow between a Writer class, which generates a joke, and a WebPageEditor class, which creates an HTML page based on the joke. The Director class directly manages the interaction between these two classes.
-
-```js
-    
-    class WebPageEditor{
-        createHtmlPage(joke){}
-    }
-
-    class Writer{
-        generateJoke(topic, language){} 
-    }
-
-    class Director{
-        constructor(){
-            this.writer = aime(new Writer());
-            this.webPageEditor = aime(new WebPageEditor());
-        }
-
-        direct(topic){
-            let joke = this.writer.generateJoke(topic, "Korean")
-            let page = this.webPageEditor.createHtmlPage(joke)
-
-            return (page)
-        }
-    }
-
-    const publisher = new Director();
-
-    document.write(publisher.direct("a cute dog"))
-```
 
 #### Multi-Agent
 This example shows a multi-agent system where a Scheduler class creates a schedule that includes multiple agents (Planner and Calculator). It demonstrates a pattern for orchestrating tasks among multiple agents, where each agent has a specific role or function.

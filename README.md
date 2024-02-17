@@ -56,7 +56,7 @@ and try following examples:
 
 While the default behavior is to automatically generate prompts from the method name and parameters, this example uses a given prompt to request a joke. It explicitly forms the request string, providing more control over the AI's input.
 
-```
+```js
     class Publisher{
         //derives the prompt from the method and parameter names
         generateJoke(topic, language){} 
@@ -68,6 +68,7 @@ While the default behavior is to automatically generate prompts from the method 
             `
         }
 
+        //using given prompt and returns JSON object
         generateJsonJoke(topic, language){
             return `    
                 please generate a joke for ${topic} in ${language} language. 
@@ -115,8 +116,8 @@ This example illustrates direct orchestration where a Director class orchestrate
         }
 
         direct(topic){
-            this.scratchpad = this.writer.generateJoke(topic, "Korean")
-            this.page = this.webPageEditor.createHtmlPage(this.scratchpad)
+            this.scratchpad = await this.writer.generateJoke(topic, "Korean")
+            this.page = await this.webPageEditor.createHtmlPage(this.scratchpad)
 
         }
     }

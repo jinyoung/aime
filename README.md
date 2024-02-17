@@ -1,3 +1,5 @@
+# This is still a draft. It is scheduled to be released in early March.
+
 AI application development often requires a balance between leveraging the power of AI and maintaining object-oriented programming principles. Traditional frameworks like LangChain and Semantic Kernel offer robust solutions but may require developers to adapt their design patterns to fit the AI integration model.
 
 #### AIME Framework

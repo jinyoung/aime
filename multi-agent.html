@@ -1,0 +1,23 @@
+
+<script src="aime.js"></script>
+
+<script>
+    
+    class Scheduler{
+        createSchedule(topic){
+            return {
+                "co-workers": [Planner, Calculator]
+            }
+        }
+    }
+
+    class Calculator{
+        calculate(expression){}
+    }
+
+    class Planner{
+        plan(topic){}
+    }
+
+    document.write(aime(new Scheduler()).createSchedule("4 days trip for South Korea"))
+</script>

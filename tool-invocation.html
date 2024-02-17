@@ -1,0 +1,23 @@
+
+<script src="aime.js"></script>
+
+<script>
+    
+    class Scheduler{
+        createSchedule(topic){
+            return {
+                "tools": [this.calculate]
+            }
+        }
+
+        calculate(expression){
+            try{
+                return eval(expression)
+            }catch(e){
+                return "Failed to evaluate expression: " + expression
+            }
+        }
+    }
+
+    document.write(aime(new Scheduler()).createSchedule("4 days trip for South Korea"))
+</script>

@@ -1,0 +1,31 @@
+
+<script src="aime.js"></script>
+
+<script>
+    
+    class WebPageEditor{
+        createHtmlPage(joke){}
+    }
+
+    class Writer{
+        generateJoke(topic, language){} 
+    }
+
+    class Director{
+        constructor(){
+            this.writer = aime(new Writer());
+            this.webPageEditor = aime(new WebPageEditor());
+        }
+
+        direct(topic){
+            let joke = this.writer.generateJoke(topic, "Korean")
+            let page = this.webPageEditor.createHtmlPage(joke)
+
+            return (page)
+        }
+    }
+
+    const publisher = new Director();
+
+    document.write(publisher.direct("a cute dog"))
+</script>

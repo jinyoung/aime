@@ -67,12 +67,12 @@ This example illustrates direct orchestration where a Director class orchestrate
         constructor(){
             this.writer = aime(new Writer());
             this.webPageEditor = aime(new WebPageEditor());
-            this.joke = null
+            this.scratchpad = null
         }
 
         direct(topic){
-            this.joke = this.writer.generateJoke(topic, "Korean")
-            this.page = this.webPageEditor.createHtmlPage(joke)
+            this.scratchpad = this.writer.generateJoke(topic, "Korean")
+            this.page = this.webPageEditor.createHtmlPage(this.scratchpad)
 
         }
     }

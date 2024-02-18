@@ -16,12 +16,23 @@ const handler = {
             
             let prompt = origMethod.apply(this, args);
             if (!prompt) {
+                prompt = "As a " + target.constructor.name + ", ";
                 const paramNames = getParamNames(target[propKey]);
-                prompt = propKey.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
+                prompt += propKey.replace(/([A-Z])/g, ' $1').trim().toLowerCase();
                 prompt += " with parameters:";
                 paramNames.forEach((param, index) => {
-                    prompt += `\n- ${param}: ${JSON.stringify(args[index])}`;
+                    if (!param.includes('_')) {
+                        prompt += `\n- ${param}: ${JSON.stringify(args[index])}`;
+                    }
                 });
+
+                const underscoreParamNames = paramNames.filter(name => name.includes('_')).map(name => name.replace(/_/g, ' ').toUpperCase());
+                if (underscoreParamNames.length > 0) {
+                    prompt += "\n\nSELF CRITICISM:";
+                    underscoreParamNames.forEach(name => {
+                        prompt += `\n- ${name}`;
+                    });
+                }
             }
 
             if (async) {}
@@ -40,14 +51,20 @@ const handler = {
                             }
                         }
 
+                        let sanitizeMethod = target[propKey + "_sanitizeOutput"];
+                        if (typeof sanitizeMethod === "function") {
+                            model = sanitizeMethod.call(target, model);
+                        }
+
                         resolve(model)
                     }
                 })
                 
-                aiGenerator.previousMessages=[{
-                    role:"user",
-                    content: prompt
-                }]
+                aiGenerator.prompt=prompt
+                
+                if(localStorage.getItem("LANGOBJECT_DEBUG") !== "false"){
+                    console.log("[langobject] using prompt: ", prompt)
+                }
     
                 aiGenerator.generate()
     

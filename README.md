@@ -7,8 +7,7 @@ The langobject framework aims to integrate AI capabilities into applications wit
 Consider the following example where an existing Publisher class method generateJoke is enhanced with AI capabilities using langobject:
 
 ```js
-    class Publisher{
-        //derives the prompt from the method and parameter names
+    class Writer{
         generateJoke(topic, language){}
         
     }
@@ -16,7 +15,7 @@ Consider the following example where an existing Publisher class method generate
     //create AI version of Publisher
     let publisher = langobject(new Publisher())
     
-    publisher.generateJoke("a cute dog", "Korean").then(joke => alert(joke));
+    publisher.writePoem("a cute dog", "Korean").then(joke => alert(joke));
 ```
 
 
@@ -28,7 +27,7 @@ In this example, the Publisher class remains unchanged, preserving its object-or
 
 ```py
     def generate_joke(topic, language):
-        prompt = f"Generate a funny joke about {topic} in {language}."
+        prompt = f"As a professional Writer, Generate a joke about {topic} in {language}."
         response = llm(prompt)
         return response
 
@@ -129,6 +128,53 @@ This example illustrates direct orchestration where a Director class orchestrate
 
 ```
 
+#### Form Generator
+This example demonstrates how to dynamically generate a form using the VueJS framework with the help of a `Vue2Expert` class. The class includes a method `createForm` that takes an array of field definitions and returns a Vue component template for a form. The `createForm_sanitizeOutput` method is used to sanitize the output, ensuring that only the template content is returned. 
+The `return_only_code__without_any_explanation` argument instructs the method to exclude any additional explanations beyond code generation.(Arguments with '_' in their names are identified as additional directives for the prompt)
+    
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+<div id="app"></div>
+
+<script type="module">
+    import langobject from '../src/langobject.js'
+    
+    class Vue2Expert{
+        createForm(fields, return_only_code__without_any_explanation){
+        }
+
+        createForm_sanitizeOutput(text){
+            const templateContentMatch = text.match(/<template>(.*?)<\/template>/gs);
+            return templateContentMatch ? templateContentMatch[0].replace(/<template>|<\/template>/gs, '') : '';
+        }
+    }
+
+    (async ()=>{
+
+        let expert = new Vue2Expert()
+        
+        let result = await langobject(expert).createForm([
+            {fieldName: 'Name', type: 'string', mandatory: true},
+            {fieldName: 'RegistrationDate', type: 'date', mandatory: true},
+            {fieldName: 'NumberOfPeople', type: 'int', default: 2},
+        ], true)
+
+        // Register result as a Vue component
+        Vue.component('dynamic-form', {
+            template: result
+        });
+
+        // Create a new Vue instance and mount it to #app to render the dynamic component
+        new Vue({
+            el: '#app'
+        });
+    })()
+
+</script>
+```
+If you desire the outcome for Vue3, simply changing the class name from Vue2Expert to Vue3Expert works like magic.
 
 #### Tool Invocation
 In this example, a Scheduler class defines a tool (method) called calculate within its createSchedule method. This demonstrates how a tool can be invoked internally within the orchestration logic, showcasing a pattern where tools are defined and used within the same class.

@@ -27,13 +27,13 @@ export default class AIGenerator {
             this.prompt = "";
         }
         
-        if(!this.preferredLanguage) {
-            this.preferredLanguage = "English";
+        // if(!this.preferredLanguage) {
+        //     this.preferredLanguage = "English";
 
-            if(window && window.countryCode == 'ko') {
-                this.preferredLanguage = "Korean";
-            }
-        }
+        //     if(window && window.countryCode == 'ko') {
+        //         this.preferredLanguage = "Korean";
+        //     }
+        // }
 
     }
     

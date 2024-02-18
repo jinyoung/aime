@@ -1,0 +1,42 @@
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+
+
+<div id="app"></div>
+
+
+
+<script type="module">
+    import langobject from '../src/langobject.js'
+    
+    class Vuetify3Expert{
+        createForm(fields, return_only_code__without_any_explanation){
+        }
+
+        createForm_sanitizeOutput(text){
+            const templateContentMatch = text.match(/<template>(.*?)<\/template>/gs);
+            return templateContentMatch ? templateContentMatch[0].replace(/<template>|<\/template>/gs, '') : '';
+        }
+    }
+
+    (async ()=>{
+
+        let expert = new Vuetify3Expert()
+        
+        let result = await langobject(expert).createForm([
+            {fieldName: 'Name', type: 'string', mandatory: true},
+            {fieldName: 'RegistrationDate', type: 'date', mandatory: true},
+            {fieldName: 'NumberOfPeople', type: 'int', default: 2},
+        ], true)
+
+        // Register result as a Vue component
+        Vue.component('dynamic-form', {
+            template: result
+        });
+
+        // Create a new Vue instance and mount it to #app to render the dynamic component
+        new Vue({
+            el: '#app'
+        });
+    })()
+
+</script>

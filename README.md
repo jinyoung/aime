@@ -92,42 +92,7 @@ While the default behavior is to automatically generate prompts from the method 
 
 ```
 
-
-#### Orchestration and Memory
-This example illustrates direct orchestration where a Director class orchestrates the workflow between a Writer class, which generates a joke, and a WebPageEditor class, which creates an HTML page based on the joke. The Director class directly manages the interaction between these two classes.
-
-```js
-    
-    class WebPageEditor{
-        createHtmlPage(joke){}
-    }
-
-    class Writer{
-        generateJoke(topic, language){} 
-    }
-
-    class Director{
-        constructor(){
-            this.writer = langobject(new Writer());
-            this.webPageEditor = langobject(new WebPageEditor());
-            this.scratchpad=''
-        }
-
-        async direct(topic){
-            this.scratchpad = await this.writer.generateJoke(topic, "Korean")
-            let page = await this.webPageEditor.createHtmlPage(this.scratchpad)
-
-            return (page)
-        }
-    }
-
-    const publisher = new Director();
-
-    publisher.direct("a cute dog").then(result => document.write(result))
-
-```
-
-#### Form Generator
+##### Example: Form Generator
 This example demonstrates how to dynamically generate a form using the VueJS framework with the help of a `Vue2Expert` class. The class includes a method `createForm` that takes an array of field definitions and returns a Vue component template for a form. The `createForm_sanitizeOutput` method is used to sanitize the output, ensuring that only the template content is returned. 
 The `return_only_code__without_any_explanation` argument instructs the method to exclude any additional explanations beyond code generation.(Arguments with '_' in their names are identified as additional directives for the prompt)
     
@@ -174,6 +139,42 @@ The `return_only_code__without_any_explanation` argument instructs the method to
 </script>
 ```
 If you desire the outcome for Vue3, simply changing the class name from Vue2Expert to Vue3Expert works like magic.
+
+#### Orchestration and Memory
+This example illustrates direct orchestration where a Director class orchestrates the workflow between a Writer class, which generates a joke, and a WebPageEditor class, which creates an HTML page based on the joke. The Director class directly manages the interaction between these two classes.
+
+```js
+    
+    class WebPageEditor{
+        createHtmlPage(joke){}
+    }
+
+    class Writer{
+        generateJoke(topic, language){} 
+    }
+
+    class Director{
+        constructor(){
+            this.writer = langobject(new Writer());
+            this.webPageEditor = langobject(new WebPageEditor());
+            this.scratchpad=''
+        }
+
+        async direct(topic){
+            this.scratchpad = await this.writer.generateJoke(topic, "Korean")
+            let page = await this.webPageEditor.createHtmlPage(this.scratchpad)
+
+            return (page)
+        }
+    }
+
+    const publisher = new Director();
+
+    publisher.direct("a cute dog").then(result => document.write(result))
+
+```
+
+
 
 #### Tool Invocation
 In this example, a Scheduler class defines a tool (method) called calculate within its createSchedule method. This demonstrates how a tool can be invoked internally within the orchestration logic, showcasing a pattern where tools are defined and used within the same class.

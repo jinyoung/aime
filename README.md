@@ -9,13 +9,12 @@ Consider the following example where an existing Publisher class method generate
 ```js
     class Writer{
         generateJoke(topic, language){}
-        
     }
 
-    //create AI version of Publisher
-    let publisher = langobject(new Publisher())
+    //create AI version of Writer
+    let writer = langobject(new Writer())
     
-    publisher.writePoem("a cute dog", "Korean").then(joke => alert(joke));
+    writer.generateJoke("a cute dog", "Korean").then(joke => alert(joke));
 ```
 
 

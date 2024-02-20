@@ -52,7 +52,7 @@ In summary, the langobject framework provides a unique solution for integrating 
 
 
 
-# How to use
+# Usages
 ```
 npm i langobject
 ```

@@ -177,31 +177,101 @@ This example illustrates direct orchestration where a Director class orchestrate
 
 
 #### Tool Invocation
-In this example, a Scheduler class defines a tool (method) called calculate within its createSchedule method. This demonstrates how a tool can be invoked internally within the orchestration logic, showcasing a pattern where tools are defined and used within the same class.
+
+
+This example showcases how to create an interactive order-taking. The assistant is capable of presenting the menu, calculating the total cost of an order, and responding to user queries in a simulated conversation.
+
 
 ```js
-    
-    class Scheduler{
-        createSchedule(topic){
-            return {
-                "tools": [this.calculate]
-            }
-        }
+import langobject from 'langobject'
 
-        calculate(expression){
-            try{
-                return eval(expression)
-            }catch(e){
-                return "Failed to evaluate expression: " + expression
-            }
-        }
+class OrderTaker{
+    constructor(){
+        this.messages = [{
+            role: "system",
+            content: `
+
+You are a clerk taking orders at a pizza shop. The menu is as follows:
+
+- Cheese Burst Pizza: $22
+- Pepperoni Pizza: $25
+- Veggie Delight Pizza: $18
+- Hawaiian Pizza: $23
+- BBQ Chicken Pizza: $24
+- Options:
+    * Extra Cheese: +$2
+    * Stuffed Crust: +$3
+    * Extra Toppings: +$4
+                    
+`
+        }];
+
+        this.tools = [this.tellAboutMenu, this.finalOrder, this.calculator]
     }
 
-    document.write(langobject(new Scheduler()).createSchedule("4 days trip for South Korea"))
+    respondToUser(userRequest){}
+
+    tellAboutMenu(content){
+        document.write("<b>[MENU]" + JSON.stringify(content) +"<br></b>")
+    }
+
+    finalOrder(order){
+        document.write("<b>[ORDER] Make an order for: " + JSON.stringify(order) +"<br></b>")
+    }
+
+    calculator(javaScriptMathExpression){
+        document.write("<b>[MATH] Total is: " + eval(javaScriptMathExpression) +"<br></b>")
+    }
+
+}
+
+const orderTaker = langobject(new OrderTaker());
+
+async function talk(msg){
+    document.write("<span style='color:green;'>[USER] "+ msg +"</span><br>")
+    document.write("[SYSTEM]" + await orderTaker.respondToUser(msg) +"<p>")
+}
+
+
+window.onload = (event) => {
+    (async ()=>{
+        await talk("What's the weather like in Seoul today?")
+
+        await talk("What are the menu options for pizzas with cheese?")
+        await talk("How much would it cost for 2 Cheese Burst Pizzas?")
+        await talk("That's too expensive... I'll just order one Cheese Burst Pizza.")
+
+        await talk("What options can I add?")
+        await talk("I'll add one cheese. How much is it in total?")
+        await talk("Alright, I'll make the entire order like this now.")
+
+
+    })()
+};
+
+
 ```
 
+The `OrderTaker` class is designed to simulate an order-taking clerk at a pizza shop. It includes methods for displaying the menu 1, finalizing the order 2, and calculating the total cost 3. The class uses the langobject framework to enhance its capabilities, allowing it to process and respond to user requests in a more dynamic and AI-driven manner.
 
-#### Multi-Agent
+- `Menu and Tools Initialization`: The constructor initializes the menu and a list of tools (this.tools) that the OrderTaker can use to interact with the user. These tools include methods for telling about the menu, finalizing orders, and performing calculations.
+
+- `Responding to User Requests`: The respondToUser method is intended to process user requests. Although its implementation is not shown, it would typically involve analyzing the user's input and determining the appropriate response or action to take.
+
+- `Menu Presentation`: The tellAboutMenu method displays the pizza shop's menu to the user. It formats the content as a bolded JSON string for clarity.
+
+- `Order Finalization`: The finalOrder method is used to confirm the user's order, displaying it in a structured format.
+
+- `Cost Calculation`: The calculator method evaluates a JavaScript mathematical expression to calculate the total cost of an order. This demonstrates how the application can perform dynamic calculations based on user input.
+Interaction Flow
+
+
+Usage Scenario
+
+![Order Taking Process](order-taking.png)
+
+
+#### Multi-Agent (ToDo)
 This example shows a multi-agent system where a Scheduler class creates a schedule that includes multiple agents (Planner and Calculator). It demonstrates a pattern for orchestrating tasks among multiple agents, where each agent has a specific role or function.
 
 ```js

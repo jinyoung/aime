@@ -1,0 +1,68 @@
+<script type="module">
+import langobject from '../src/langobject.js'
+
+class OrderTaker{
+    constructor(){
+        this.messages = [{
+            role: "system",
+            content: `
+
+You are a clerk taking orders at a pizza shop. The menu is as follows:
+
+- Cheese Burst Pizza: $22
+- Pepperoni Pizza: $25
+- Veggie Delight Pizza: $18
+- Hawaiian Pizza: $23
+- BBQ Chicken Pizza: $24
+- Options:
+    * Extra Cheese: +$2
+    * Stuffed Crust: +$3
+    * Extra Toppings: +$4
+                    
+`
+        }];
+
+        this.tools = [this.tellAboutMenu, this.finalOrder, this.calculator]
+    }
+
+    respondToUser(userRequest){}
+
+    tellAboutMenu(content){
+        document.write("<b>[MENU]" + JSON.stringify(content) +"<br></b>")
+    }
+
+    finalOrder(order){
+        document.write("<b>[ORDER] Make an order for: " + JSON.stringify(order) +"<br></b>")
+    }
+
+    calculator(javaScriptMathExpression){
+        document.write("<b>[MATH] Total is: " + eval(javaScriptMathExpression) +"<br></b>")
+    }
+
+}
+
+const orderTaker = langobject(new OrderTaker());
+
+async function talk(msg){
+    document.write("<span style='color:green;'>[USER] "+ msg +"</span><br>")
+    document.write("[SYSTEM]" + await orderTaker.respondToUser(msg) +"<p>")
+}
+
+
+window.onload = (event) => {
+    (async ()=>{
+        await talk("What's the weather like in Seoul today?")
+
+        await talk("What are the menu options for pizzas with cheese?")
+        await talk("How much would it cost for 2 Cheese Burst Pizzas?")
+        await talk("That's too expensive... I'll just order one Cheese Burst Pizza.")
+
+        await talk("What options can I add?")
+        await talk("I'll add one cheese. How much is it in total?")
+        await talk("Alright, I'll make the entire order like this now.")
+
+
+    })()
+};
+
+</script>

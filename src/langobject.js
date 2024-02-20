@@ -15,6 +15,16 @@ const handler = {
             // 공통 로직을 처리하는 함수
             
             let prompt = origMethod.apply(this, args);
+
+            let toolPrompt = null;
+            if (typeof prompt === "string") prompt = prompt
+            if (typeof prompt === "object"){
+       
+                prompt = prompt.prompt;
+
+            }
+
+
             if (!prompt) {
                 prompt = "As a " + target.constructor.name + ", ";
                 const paramNames = getParamNames(target[propKey]);
@@ -35,30 +45,87 @@ const handler = {
                 }
             }
 
+
+            if (target.tools && Array.isArray(target.tools)) {
+                let toolDef = ''
+                target.tools.forEach((tool) => {
+                    const toolName = tool.name;
+                    const argNames = getParamNames(tool);
+                    toolDef += `- ${toolName}, args: ${argNames.join(", ")}\n`;
+                });
+
+                if(toolDef){
+                    toolPrompt = `
+You can ONLY use following tools list to process the users's request:
+${toolDef}
+return the tool invocations (may be one or more) context with following JSON format:
+
+[{
+    "tool": "tool name to invoke",
+    "args":[
+        {
+            "arg name" : "arg value"
+        } 
+    ],
+    "messageToUser": "additional message to user"
+}]
+
+If the request does not exist in the tool list, you MUST return that the requested question cannot be processed.
+                    `
+                }
+
+                if(toolPrompt) prompt += "\n\n"+ toolPrompt
+            }
+
+            
+
             if (async) {}
 
 
             return new Promise((resolve) => {
 
                 let aiGenerator = new AIGenerator({
-                    onGenerationFinished(model){
+                    onGenerationFinished(result){
 
                         if(prompt.includes("result must be in JSON format:")) {
                             try {
-                                model = JSON.parse(model);
+                                result = JSON.parse(result);
                             } catch (error) {
-                                console.error("Failed to parse model to JSON", error);
+                                console.error("Failed to parse result to JSON", error);
                             }
                         }
 
                         let sanitizeMethod = target[propKey + "_sanitizeOutput"];
                         if (typeof sanitizeMethod === "function") {
-                            model = sanitizeMethod.call(target, model);
+                            result = sanitizeMethod.call(target, result);
                         }
 
-                        resolve(model)
+                        if (target.messages && Array.isArray(target.messages)) {
+                            target.messages.push({role: "system", content: result});
+                        }
+
+                        if(toolPrompt)
+                        try {
+                            let parsedResult = JSON.parse(result);
+                            if (Array.isArray(parsedResult) && parsedResult.length > 0 && parsedResult[0].hasOwnProperty('tool')) {
+                                parsedResult.forEach(toolInvocation => {
+                                    if (target[toolInvocation.tool] && typeof target[toolInvocation.tool] === 'function') {
+                                        let args = Object.keys(toolInvocation.args).map(key => toolInvocation.args[key]);
+                                        target[toolInvocation.tool](...args);
+                                    }
+                                });
+                            }
+                        } catch (error) {
+                            console.error("Failed to parse tool invocation string to JSON", error);
+                        }
+
+                        resolve(result)
                     }
                 })
+
+                if(target.messages) {
+                    aiGenerator.previousMessages = target.messages;
+                }
                 
                 aiGenerator.prompt=prompt
                 

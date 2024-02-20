@@ -46,7 +46,11 @@ export default class AIGenerator {
     }
 
     getToken() {
-        return (window.localStorage.getItem("OPENAI_API_KEY"));
+        const apiKey = window.localStorage.getItem("OPENAI_API_KEY");
+        if (!apiKey) {
+            console.error("Error: OPENAI_API_KEY is not set in localStorage. Please set it by using 'localStorage.setItem(\"OPENAI_API_KEY\", \"Your-OpenAI-API-Key\")' in your browser's console.");
+        }
+        return apiKey;
     }
 
     generateHashKey(str) {

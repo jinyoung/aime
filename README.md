@@ -8,12 +8,12 @@ Consider the following example where an existing Writer class method generateJok
 
 ```js
     class Writer{  //define persona
-        generateJoke(topic, language){}  //define mission and user input
+        generateJoke(topic, write_in_spanish){}  //define mission, user inputs, and criticism (_)
     }
 
     let writer = langobject(new Writer())  //create AI version of Writer
     
-    writer.generateJoke("a cute dog", "Korean").then(joke => alert(joke));
+    writer.generateJoke("a cute dog").then(joke => alert(joke));
 ```
 > will produce such prompt: "As a Writer, please generate a joke for topic "topic" in "language" and invoke the LLM (OpenAI by default) and returns the result as the function return value
 

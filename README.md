@@ -15,7 +15,7 @@ Consider the following example where an existing Writer class method generateJok
     
     writer.generateJoke("a cute dog", "Korean").then(joke => alert(joke));
 ```
-will produce such prompt: "As a Writer, please generate a joke for topic "topic" in language" and invoke the LLM (OpenAI by default) and returns the result as the function return value
+> will produce such prompt: "As a Writer, please generate a joke for topic "topic" in language" and invoke the LLM (OpenAI by default) and returns the result as the function return value
 
 In this example, the Writer class remains unchanged, preserving its object-oriented design. The langobject framework wraps the Writer instance, providing an AI-enhanced proxy that can intercept the generateJoke method call and process it using AI services.
 

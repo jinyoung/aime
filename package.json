@@ -1,6 +1,6 @@
 {
   "name": "langobject",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "ai version of Object",
   "main": "src/langobject.js",
   "scripts": {

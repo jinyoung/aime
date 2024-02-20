@@ -1,0 +1,21 @@
+<div id="story"></div>
+
+<script type="module">
+    import langobject from '../src/langobject.js'
+  
+    class Writer{
+        writeLongStory(topic, language, please_write_in_html){} 
+
+        stream(chunk){
+            document.write(chunk)
+        }
+
+    }
+
+    const writer = langobject(new Writer());
+
+    window.onload = function() {
+        writer.writeLongStory("a heroic dog", "Korean")
+    }
+    
+</script>

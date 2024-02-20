@@ -120,11 +120,21 @@ If the request does not exist in the tool list, you MUST return that the request
                         }
 
                         resolve(result)
+                    },
+                    onStream(chunk){
+                        if (typeof target.stream === 'function') {
+                            target.stream(chunk)
+                        }
                     }
+                    
                 })
 
                 if(target.messages) {
                     aiGenerator.previousMessages = target.messages;
+                }
+
+                if (typeof target.stream === 'function') {
+                    aiGenerator.options.isStream = true;
                 }
                 
                 aiGenerator.prompt=prompt

@@ -49,6 +49,35 @@ npm i langobject
 ```
 and try following examples:
 
+#### Streaming Story Content
+This example showcases how to stream content to a webpage using the `Writer` class. The `Writer` class includes a method `writeLongStory` that takes a topic and language as arguments, and optionally, a directive to write the content in HTML format. The `stream` method is then used to output chunks of the story directly to the document.
+
+```js
+    import langobject from 'langobject.js'
+  
+    class Writer{
+        writeLongStory(topic, language, please_write_in_html){} 
+
+        stream(chunk){
+            document.write(chunk)
+        }
+
+    }
+
+    const writer = langobject(new Writer());
+
+    window.onload = function() {
+        writer.writeLongStory("a heroic dog", "Korean")
+    }
+    
+```
+
+
+The process begins with importing a customized `langobject` module, which presumably enhances the `Writer` class with additional capabilities, such as AI-driven content generation. Upon the window's load event, the `writeLongStory` method is invoked with a specific topic and language, initiating the streaming of the story content to the webpage.
+
+This example demonstrates a dynamic and interactive way of presenting content, where the story is generated and displayed in real-time, providing an engaging user experience.
+
+
 #### Specifying Prompt
 
 While the default behavior is to automatically generate prompts from the method name and parameters, this example uses a given prompt to request a joke. It explicitly forms the request string, providing more control over the AI's input.
@@ -138,6 +167,9 @@ The `return_only_code__without_any_explanation` argument instructs the method to
 </script>
 ```
 If you desire the outcome for Vue3, simply changing the class name from Vue2Expert to Vue3Expert works like magic.
+
+
+
 
 #### Orchestration and Memory
 This example illustrates direct orchestration where a Director class orchestrates the workflow between a Writer class, which generates a joke, and a WebPageEditor class, which creates an HTML page based on the joke. The Director class directly manages the interaction between these two classes.

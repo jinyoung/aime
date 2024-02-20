@@ -141,7 +141,15 @@ export default class AIGenerator {
                 if(parsed.choices[0].finish_reason == 'length'){
                     me.finish_reason = 'length'
                 }
-                return parsed.choices[0].delta ? parsed.choices[0].delta.content : parsed.choices[0].message.content || '';
+
+                if( parsed.choices[0].delta){
+                    if(me.client.onStream){
+                        me.client.onStream(parsed.choices[0].delta.content)
+                    }
+
+                    return parsed.choices[0].delta.content || ''
+                }else
+                    return parsed.choices[0].message.content || '';
             });
 
             const newUpdatesJoined = newUpdatesParsed.join('')

@@ -28,6 +28,8 @@ will invoke the LLM (OpenAI by default) and returns the result as the function r
 
 In this example, the Writer class remains unchanged, preserving its object-oriented design. The langobject framework wraps the Writer instance, providing an AI-enhanced proxy that can intercept the generateJoke method call and process it using AI services.
 
+> Try it live: https://playcode.io/1769495
+
 #### Comparison
 - LangChain and Semantic Kernel offer comprehensive solutions for AI integration but may require adapting your application's architecture to fully leverage their capabilities.
 

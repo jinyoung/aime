@@ -49,28 +49,6 @@ npm i langobject
 ```
 and try following examples:
 
-#### Streaming Story Content
-This example showcases how to stream content to a webpage using the `Writer` class. The `Writer` class includes a method `writeLongStory` that takes a topic and language as arguments, and optionally, a directive to write the content in HTML format. The `stream` method is then used to output chunks of the story directly to the document.
-
-```js
-    import langobject from 'langobject.js'
-  
-    class Writer{
-        writeLongStory(topic, language, please_write_in_html){} 
-
-        stream(chunk){
-            document.write(chunk)
-        }
-
-    }
-
-    const writer = langobject(new Writer());
-
-    window.onload = function() {
-        writer.writeLongStory("a heroic dog", "Korean")
-    }
-    
-```
 
 
 The process begins with importing a customized `langobject` module, which presumably enhances the `Writer` class with additional capabilities, such as AI-driven content generation. Upon the window's load event, the `writeLongStory` method is invoked with a specific topic and language, initiating the streaming of the story content to the webpage.
@@ -169,6 +147,28 @@ The `return_only_code__without_any_explanation` argument instructs the method to
 If you desire the outcome for Vue3, simply changing the class name from Vue2Expert to Vue3Expert works like magic.
 
 
+#### Streaming
+This example showcases how to stream content to a webpage using the `Writer` class. The `Writer` class includes a method `writeLongStory` that takes a topic and language as arguments, and optionally, a directive to write the content in HTML format. The `stream` method is then used to output chunks of the story directly to the document.
+
+```js
+    import langobject from 'langobject'
+  
+    class Writer{
+        writeLongStory(topic, language, please_write_in_html){} 
+
+        stream(chunk){
+            document.write(chunk)
+        }
+
+    }
+
+    const writer = langobject(new Writer());
+
+    window.onload = function() {
+        writer.writeLongStory("a heroic dog", "Korean")
+    }
+    
+```
 
 
 #### Orchestration and Memory

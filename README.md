@@ -7,16 +7,15 @@ The langobject framework aims to integrate AI capabilities into applications wit
 Consider the following example where an existing Writer class method generateJoke is enhanced with AI capabilities using langobject:
 
 ```js
-    class Writer{
-        generateJoke(topic, language){}
+    class Writer{  //define persona
+        generateJoke(topic, language){}  //define mission and user input
     }
 
-    //create AI version of Writer
-    let writer = langobject(new Writer())
+    let writer = langobject(new Writer())  //create AI version of Writer
     
     writer.generateJoke("a cute dog", "Korean").then(joke => alert(joke));
 ```
-
+will produce such prompt: "As a Writer, please generate a joke for topic "topic" in language" and invoke the LLM (OpenAI by default) and returns the result as the function return value
 
 In this example, the Writer class remains unchanged, preserving its object-oriented design. The langobject framework wraps the Writer instance, providing an AI-enhanced proxy that can intercept the generateJoke method call and process it using AI services.
 

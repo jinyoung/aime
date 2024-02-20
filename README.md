@@ -51,9 +51,6 @@ and try following examples:
 
 
 
-The process begins with importing a customized `langobject` module, which presumably enhances the `Writer` class with additional capabilities, such as AI-driven content generation. Upon the window's load event, the `writeLongStory` method is invoked with a specific topic and language, initiating the streaming of the story content to the webpage.
-
-This example demonstrates a dynamic and interactive way of presenting content, where the story is generated and displayed in real-time, providing an engaging user experience.
 
 
 #### Specifying Prompt
@@ -170,6 +167,9 @@ This example showcases how to stream content to a webpage using the `Writer` cla
     
 ```
 
+The process begins with importing a customized `langobject` module, which presumably enhances the `Writer` class with additional capabilities, such as AI-driven content generation. Upon the window's load event, the `writeLongStory` method is invoked with a specific topic and language, initiating the streaming of the story content to the webpage.
+
+This example demonstrates a dynamic and interactive way of presenting content, where the story is generated and displayed in real-time, providing an engaging user experience.
 
 #### Orchestration and Memory
 This example illustrates direct orchestration where a Director class orchestrates the workflow between a Writer class, which generates a joke, and a WebPageEditor class, which creates an HTML page based on the joke. The Director class directly manages the interaction between these two classes.

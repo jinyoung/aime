@@ -5,13 +5,14 @@ AI application development often requires a balance between leveraging the power
 The langobject framework aims to integrate AI capabilities into applications without compromising the object-oriented design. It does so by wrapping existing classes with AI-enhanced proxies that intercept method calls and optionally redirect them to AI services for processing. This approach allows developers to add AI functionalities with minimal changes to the existing codebase.
 
 Consider the following example where an existing Writer class method generateJoke is enhanced with AI capabilities using langobject:
+
 1. Define a Class
 ```js
     class Writer{  //define persona
         generateJoke(topic, write_in_spanish){}  //define mission, user inputs, and criticism (_)
     }
 ```
-> will produce such prompt: "As a Writer, please generate a joke for the topic and DON'T FORGET: write in spanish" 
+ will produce such prompt: "As a Writer, please generate a joke for the topic and DON'T FORGET: write in spanish" 
 
 2. Make it AI-powered
 
@@ -23,7 +24,7 @@ Consider the following example where an existing Writer class method generateJok
 ```js
     writer.generateJoke("a cute dog").then(joke => alert(joke));
 ```
-> invoke the LLM (OpenAI by default) and returns the result as the function return value
+will invoke the LLM (OpenAI by default) and returns the result as the function return value
 
 In this example, the Writer class remains unchanged, preserving its object-oriented design. The langobject framework wraps the Writer instance, providing an AI-enhanced proxy that can intercept the generateJoke method call and process it using AI services.
 

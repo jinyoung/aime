@@ -218,7 +218,7 @@ This example illustrates direct orchestration where a Director class orchestrate
 
 
 
-#### Tool Invocation
+#### Chat and Function Calling (Tool Invocation)
 
 
 This example showcases how to create an interactive order-taking. The assistant is capable of presenting the menu, calculating the total cost of an order, and responding to user queries in a simulated conversation.

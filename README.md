@@ -314,27 +314,116 @@ Usage Scenario
 
 
 #### Multi-Agent (ToDo)
-This example shows a multi-agent system where a Scheduler class creates a schedule that includes multiple agents (Planner and Calculator). It demonstrates a pattern for orchestrating tasks among multiple agents, where each agent has a specific role or function.
+This example shows a multi-agent system 
 
 ```js
     
-    class Scheduler{
-        createSchedule(topic){
-            return {
-                "co-workers": [Planner, Calculator]
+import langobject from 'langobject'
+
+class InternetSearcher{
+    constructor(director){
+        this.director = director
+
+        this.messages=[{
+            role: 'system',
+            content: 
+`
+You're a researcher for collecting information from internet for a topic.
+You have to search one or more documents on the internet and summerizes them for a topic
+`
+        }]
+
+        this.aiMe = langobject(this)
+
+    }
+
+    async researchAndSummerize(topic){
+
+        let score = 0
+
+        while(score < 7){
+            let searched = this.searchInternet(topic)
+            let summerized = this.aiMe.summerize(contents)
+            score = this.director.rateContentScore(topic, summerized)
+        }
+        
+    }
+
+    searchInternet(topic){
+        return [
+            "search results"
+        ]
+    }
+
+    summerize(content, write_in_markdown){
+    }
+
+}
+
+class Director{
+
+
+    constructor(){
+        this.aiMe = langobject(this)
+
+        this.tocFormat = [
+            {
+                "title": "title of this chapter",
+                "id": "id of the chapter. ie. 1., 1.1., 1.1.1.",
+                "importance": "importance of this chapter",
+                "writingDirection": "instruction on how to write the details",
+                "childChapters": [
+                    {"title": "child title of content", 
+                        "child": "recursively contains the child"}
+                ]
             }
+        ]
+
+        this.orderFormat = [
+            "id of the chapter"
+        ]
+
+        this.searchers = [{
+
+        }]
+
+        this.contents = {}
+    }
+
+    createTableOfContents(topic, returnFormat){}
+    createSequenceOfWriting(toc, returnFormat){}
+    scoreContent(chapter, content, requirements, score_how_does_the_content_meets_requirements, return_just_1_to_10_digit){}
+
+    rateContentScore(chapter, content){
+        let score = this.aiMe.scoreContent(chapter, content, this.toc)
+        try{
+            return int.parseInt(score)
+        }catch(e){
+            return 0                
         }
     }
 
-    class Calculator{
-        calculate(expression){}
-    }
 
-    class Planner{
-        plan(topic){}
-    }
+    async start(topic){
+        let toc = await this.aiMe.createTableOfContents(topic, this.tocFormat)
+        let writingOrder = await this.aiMe.createSequenceOfWriting(toc, this.orderFormat)
+        let me = this
 
-    document.write(langobject(new Scheduler()).createSchedule("4 days trip for South Korea"))
+        let promises = []
+        for(let chapter in writingOrder){
+            let searcher = new InternetSearcher(this)
+            let promise = searcher.researchAndSummerize(chapter)
+            promise.then(result => me.content[chapter] = result)
+
+            promises.push(promise)
+        }
+
+        await Promise.all(promises)
+    }
+}
+
+let director = new Director()
+director.start("A Study of Korean Culture").then(result => alert(director.contents))
 ```
 
 # How to try
